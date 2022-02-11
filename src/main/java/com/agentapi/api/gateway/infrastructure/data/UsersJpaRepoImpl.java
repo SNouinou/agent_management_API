@@ -21,13 +21,13 @@ public class UsersJpaRepoImpl implements UserRepository {
 
 	@Override
 	public BatchFeedback saveAll(List<User> userList) {
+		
+		List<UserEntity> entities = userList.stream()
+				.map(user -> UserEntity.toEntity(user))
+				.collect(Collectors.toList());
 
 		List<UserEntity> savedEntries = 
-				jpaRepository.saveAll(
-						userList.stream()
-						.map(user -> UserEntity.toEntity(user))
-						.collect(Collectors.toList())
-						);
+				jpaRepository.saveAll(entities);
 		
 		return new BatchFeedback(
 				userList.size(),
