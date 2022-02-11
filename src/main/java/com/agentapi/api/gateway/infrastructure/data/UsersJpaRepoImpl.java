@@ -10,6 +10,7 @@ import com.agentapi.api.core.domain.User;
 import com.agentapi.api.core.domain.UserRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Repository
@@ -33,7 +34,20 @@ public class UsersJpaRepoImpl implements UserRepository {
 				savedEntries.size(),
 				userList.size()-savedEntries.size()
 				);
-
 	}
+
+	@Override
+	public User findUserByUsernameOrEmail(String login) {
+		
+		UserEntity user = jpaRepository.findByUsernameOrEmail(login);
+		
+		if(user == null) {
+			return null;
+		} else {
+			return user.toDomain();
+		}
+	}
+	
+	
 
 }
