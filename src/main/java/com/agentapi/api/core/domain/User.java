@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 	
+	private String id;
 	  private String firstName;
 	  private String lastName;
 	  private Date birthDate;
@@ -24,4 +25,22 @@ public class User {
 	  private String email;
 	  private String password;
 	  private UserRole role;
+	  
+	  public UserProfile mapToUserProfile() {
+		    return new UserProfile(
+		        this.firstName,
+		        this.lastName,
+		        this.birthDate,
+		        this.city,
+		        this.country,
+		        this.avatar,
+		        this.company,
+		        this.jobPosition,
+		        this.mobile,
+		        this.username,
+		        this.email,
+		        this.role.name()
+		    );
+		  }
+
 }

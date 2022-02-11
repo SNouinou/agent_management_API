@@ -27,6 +27,7 @@ public class UserJavaFaker implements UserFaker {
 		for(int i = 0; i<count; i++) {
 
 			item = new User(
+					faker.idNumber().ssnValid(),
 					faker.name().firstName(),
 					faker.name().lastName(),
 					faker.date().birthday(),

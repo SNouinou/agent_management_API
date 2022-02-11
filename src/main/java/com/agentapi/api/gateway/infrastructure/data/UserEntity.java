@@ -51,6 +51,7 @@ public class UserEntity {
 	
 	public User toDomain() {
 		return new User(
+				this.id,
 				this.firstName,
 				this.lastName,
 				this.birthDate,
@@ -69,7 +70,7 @@ public class UserEntity {
 	
 	public static UserEntity toEntity(User dto) {
 		return new UserEntity(
-				"",
+				dto.getId(),
 				dto.getFirstName(),
 				dto.getLastName(),
 				dto.getBirthDate(),
