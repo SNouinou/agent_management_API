@@ -13,8 +13,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	  protected void configure(HttpSecurity http) throws Exception {
 	    http
 	      .authorizeRequests()
-	        .antMatchers("/api/users/generate").permitAll()
-	        .anyRequest().authenticated();
+	        .antMatchers("/api/users/generate","/api/users/batch").permitAll()
+	        .anyRequest().authenticated()
+	        .and().csrf().disable();// batch endpoint
 	  }
 
 }
