@@ -2,6 +2,7 @@ package com.agentapi.api.core.application;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Component
 public class BatchUserList {
-	
+
 	private UserRepository repository;
 	
 	private PasswordEncoder encoder;
