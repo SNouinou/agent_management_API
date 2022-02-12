@@ -13,7 +13,6 @@ import com.github.javafaker.Faker;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Component
 public class UserJavaFaker implements UserFaker {
 

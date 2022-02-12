@@ -15,10 +15,10 @@ public class ConsultUserProfile {
 	
   private UserRepository userRepository;
 
-  public UserProfile handle(String username) {
-    User user = userRepository.findUserByUsernameOrEmail(username);
+  public UserProfile handle(String login) {
+    User user = userRepository.findUserByUsernameOrEmail(login);
     if (user != null) {
-      return userRepository.findUserByUsernameOrEmail(username).mapToUserProfile();
+      return userRepository.findUserByUsernameOrEmail(login).mapToUserProfile();
     } else {
       return null;
     }

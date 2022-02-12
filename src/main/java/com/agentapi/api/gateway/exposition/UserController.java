@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,7 +74,7 @@ public class UserController {
 	  @GetMapping("{username}")
 	  public ResponseEntity<UserProfile> getUserProfile(@PathVariable String username) {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    String authenticatedUserEmail = authentication.getPrincipal().toString();
+	    String authenticatedUserEmail = authentication.getPrincipal() instanceof UserDetails ? ((UserDetails)authentication.getPrincipal()).getUsername() : authentication.getPrincipal().toString() ;
 	    UserProfile authenticatedUserProfile = consultUserProfile.handle(authenticatedUserEmail);
 	    if (Objects.equals(username, "me") || Objects.equals(username, authenticatedUserProfile.getUsername())) {
 	      return ResponseEntity.ok(authenticatedUserProfile);
