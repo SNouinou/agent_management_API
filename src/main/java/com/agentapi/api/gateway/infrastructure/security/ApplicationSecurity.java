@@ -9,11 +9,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
+@OpenAPIDefinition
+@SecurityScheme(
+	    name = "bearerAuth",
+	    type = SecuritySchemeType.HTTP,
+	    bearerFormat = "JWT",
+	    scheme = "bearer"
+	)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	
     private JwtTokenProvider jwtTokenProviderService;
@@ -35,15 +45,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	  
 	    @Override
 	    public void configure(WebSecurity web) throws Exception {
-	        web.ignoring().antMatchers("/v2/api-docs")//
+	        web.ignoring().antMatchers("/v3/api-docs/**")//
 	                .antMatchers("/swagger-resources/**")//
 	                .antMatchers("/swagger-ui.html")//
-	                .antMatchers("/configuration/**")//
-	                .antMatchers("/webjars/**")//
-	                .antMatchers("/public")
-	                .and()
-	                .ignoring()
-	                .antMatchers("/h2-console/**/**");;
+	                .antMatchers("/swagger-ui/**")
+	                .antMatchers("/h2-console/**/**");
 	    }
 	  
 	    @Override
@@ -51,5 +57,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	    public AuthenticationManager authenticationManagerBean() throws Exception {
 	        return authenticationManager();
 	    }
+	    
 
 }

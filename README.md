@@ -10,6 +10,7 @@
 - JavaFaker
 - Java Persistence API
 - JJWT for JWT authentication
+- swagger-ui + openapi-ui
 
 ### Endpoints
 - `GET /api/users/generate?count={count}` generate `count` users and download it (No authorization required).
@@ -19,4 +20,8 @@
 - `GET /api/users/{username}` check the profile of `username`
 
 ### Run the project
-After installing the dependencies, run `ApiApplication.java` to run the project.
+After installing the dependencies, run `ApiApplication.java` to run the project. the project is accessible through `localhost:9090`
+
+### Documentation
+All endpoints are testable via The Swagger Interface
+http://localhost:9090/swagger-ui.html
