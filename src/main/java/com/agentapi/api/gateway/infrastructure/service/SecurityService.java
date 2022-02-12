@@ -27,10 +27,10 @@ public class SecurityService implements SecureUserService {
 		User user = userRepository.findUserByUsernameOrEmail(login);
     	
 		try {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), password));
 
 		LoginResponse loginResponse = new LoginResponse();
-		loginResponse.setAccessToken(jwtTokenProviderService.createToken(user.getUsername(), user.getRole()));
+		loginResponse.setAccessToken(jwtTokenProviderService.createToken(user.getEmail(), user.getRole()));
 
 		return loginResponse;
 		} catch(Exception e) {

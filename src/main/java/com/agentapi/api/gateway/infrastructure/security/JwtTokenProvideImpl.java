@@ -25,24 +25,23 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Service
 public class JwtTokenProvideImpl implements JwtTokenProvider {
 
-    private String secretKey = "user";
+    private static String secretKey = "user";
 
-    private long validityInMilliseconds = 3600000; // 1h
+    private final static long validityInMilliseconds = 3600000; // 1h
 
     private MyUserDetailsService myUserDetailsService;
+    
+    public JwtTokenProvideImpl(MyUserDetailsService myUserDetailsService) {
+		super();
+		this.myUserDetailsService = myUserDetailsService;
+	}
 
-    @PostConstruct
+	@PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
-
-    public JwtTokenProvideImpl(MyUserDetailsService myUserDetailsService) {
-        this.myUserDetailsService = myUserDetailsService;
     }
 
     @Override
