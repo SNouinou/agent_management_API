@@ -33,6 +33,8 @@ import com.agentapi.api.core.domain.UserProfile;
 import com.agentapi.api.core.domain.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -71,6 +73,7 @@ public class UserController {
 		
 	}
 	
+	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
 	  @GetMapping("{username}")
 	  public ResponseEntity<UserProfile> getUserProfile(@PathVariable String username) {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
