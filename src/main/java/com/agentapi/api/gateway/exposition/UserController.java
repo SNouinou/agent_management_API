@@ -2,6 +2,7 @@ package com.agentapi.api.gateway.exposition;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.agentapi.api.core.application.BatchUserList;
 import com.agentapi.api.core.application.BatchUserListInput;
 import com.agentapi.api.core.application.ConsultUserProfile;
+import com.agentapi.api.core.application.FetchUserList;
+import com.agentapi.api.core.application.FetchUserListInput;
 import com.agentapi.api.core.application.GenerateUsers;
 import com.agentapi.api.core.application.GenerateUsersInput;
 import com.agentapi.api.core.domain.BatchFeedback;
@@ -46,6 +49,8 @@ public class UserController {
 	
 	private BatchUserList batchUserList;
 	
+	private FetchUserList fetchUserList;
+	
 	private ConsultUserProfile consultUserProfile;
 	
 	@GetMapping(value="generate")
@@ -60,8 +65,14 @@ public class UserController {
 
 	}
 	
+	@GetMapping(value="fetch")
+	public ResponseEntity<List<User>> fetchUserList(@RequestParam("page") Integer page){
+		List<User> payload = fetchUserList.handle( new FetchUserListInput(page));
+		return ResponseEntity.ok(payload);
+	}
+	
 	@PostMapping(value="batch", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public BatchFeedback batchUserList(@RequestParam("file") MultipartFile userFile) throws IOException {
+	public ResponseEntity<BatchFeedback> batchUserList(@RequestParam("file") MultipartFile userFile) throws IOException {
 		
 		InputStream jsonArray = userFile.getInputStream();
 
@@ -69,7 +80,9 @@ public class UserController {
 
 		User[] users = objectMapper.readValue(jsonArray, User[].class);
 		
-		return batchUserList.handle(new BatchUserListInput(Arrays.asList(users)));
+		BatchFeedback payload = batchUserList.handle(new BatchUserListInput(Arrays.asList(users)));
+		
+		return ResponseEntity.ok(payload);
 		
 	}
 	
