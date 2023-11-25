@@ -2,11 +2,11 @@ package com.agentapi.api.gateway.exposition;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,9 +65,12 @@ public class UserController {
 
 	}
 	
-	@GetMapping(value="fetch")
-	public ResponseEntity<List<User>> fetchUserList(@RequestParam("page") Integer page){
-		List<User> payload = fetchUserList.handle( new FetchUserListInput(page));
+	@GetMapping(value = "fetch")
+	public ResponseEntity<Page<User>> fetchUserList(
+			@RequestParam("page") Integer page,
+			@RequestParam("size") Integer size,
+			@RequestParam(required=false) String username) {
+		Page<User> payload = fetchUserList.handle(new FetchUserListInput(page, size, username));
 		return ResponseEntity.ok(payload);
 	}
 	
