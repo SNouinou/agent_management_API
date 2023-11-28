@@ -9,4 +9,5 @@ public interface UserRepository {
 	User findUserByUsernameOrEmail(String login);
 	List<User> findAll();
 	Page<User> getPage(int page, int size, String username);
+	Boolean deleteById(String userId) throws Exception;
 }

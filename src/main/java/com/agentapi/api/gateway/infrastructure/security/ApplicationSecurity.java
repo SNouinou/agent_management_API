@@ -32,7 +32,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	  protected void configure(HttpSecurity http) throws Exception {
 	    http
 	      .authorizeRequests()
-	        .antMatchers("/api/users/generate","/api/users/batch","/api/auth","/api/users/fetch").permitAll()
+	        .antMatchers("/api/users/generate","/api/users/batch","/api/auth","/api/users/fetch","/api/users/deleteItem").permitAll()
 	        .anyRequest().authenticated();
 	       
 	    

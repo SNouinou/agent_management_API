@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
+
 import com.agentapi.api.core.domain.User;
 import com.agentapi.api.core.domain.UserRole;
 
@@ -18,6 +23,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+@FilterDef(name = "deletedUserFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
+@Filter(name = "deletedUserFilter", condition = "deleted = :isDeleted")
 public class UserEntity {
 
 	@Id
@@ -48,6 +56,8 @@ public class UserEntity {
 	private String password;
 	
 	private String role;
+	
+    private boolean deleted = Boolean.FALSE;
 	
 	public User toDomain() {
 		return new User(
@@ -83,7 +93,8 @@ public class UserEntity {
 				dto.getUsername(),
 				dto.getEmail(),
 				dto.getPassword(),
-				dto.getRole().toString()
+				dto.getRole().toString(),
+				Boolean.FALSE
 				);
 	}
 	
