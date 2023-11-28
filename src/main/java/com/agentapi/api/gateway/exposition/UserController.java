@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.agentapi.api.core.application.BatchUserList;
 import com.agentapi.api.core.application.BatchUserListInput;
 import com.agentapi.api.core.application.ConsultUserProfile;
+import com.agentapi.api.core.application.DeleteUser;
+import com.agentapi.api.core.application.DeleteUserInput;
 import com.agentapi.api.core.application.FetchUserList;
 import com.agentapi.api.core.application.FetchUserListInput;
 import com.agentapi.api.core.application.GenerateUsers;
@@ -52,6 +55,8 @@ public class UserController {
 	private FetchUserList fetchUserList;
 	
 	private ConsultUserProfile consultUserProfile;
+	
+	private DeleteUser deleteUser;
 	
 	@GetMapping(value="generate")
 	public ResponseEntity<List<User>> generateUsers(@RequestParam Integer count){
@@ -87,6 +92,18 @@ public class UserController {
 		
 		return ResponseEntity.ok(payload);
 		
+	}
+	
+	@DeleteMapping(value = "deleteItem")
+	public ResponseEntity<Boolean> deleteUserById(
+			@RequestParam("id") String id) {
+		Boolean payload;
+		try {
+			payload = deleteUser.handle(new DeleteUserInput(id));
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
+		return ResponseEntity.ok(payload);
 	}
 	
 	@Operation(security = @SecurityRequirement(name = "bearerAuth"))
