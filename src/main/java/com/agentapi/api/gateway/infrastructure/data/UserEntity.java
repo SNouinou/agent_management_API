@@ -58,6 +58,8 @@ public class UserEntity {
 	private String role;
 	
     private boolean deleted = Boolean.FALSE;
+    
+    private boolean enabled = Boolean.TRUE;
 	
 	public User toDomain() {
 		return new User(
@@ -74,7 +76,8 @@ public class UserEntity {
 				this.username,
 				this.email,
 				this.password,
-				UserRole.valueOf(this.role)
+				UserRole.valueOf(this.role),
+				this.enabled
 				);
 	}
 	
@@ -94,7 +97,8 @@ public class UserEntity {
 				dto.getEmail(),
 				dto.getPassword(),
 				dto.getRole().toString(),
-				Boolean.FALSE
+				Boolean.FALSE,
+				dto.getEnabled()
 				);
 	}
 	

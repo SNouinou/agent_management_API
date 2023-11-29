@@ -122,4 +122,18 @@ public class UsersJpaRepoImpl implements UserRepository {
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public Boolean toggleUserAccessById(String userId, Boolean value) throws Exception {
+		Optional<UserEntity> userLookup = jpaRepository.findById(userId);
+		if(userLookup.isEmpty()) {
+			throw new Exception("Attempt to perform an action on a user that does not exist");
+		}
+		
+		UserEntity update = userLookup.get();
+		update.setEnabled(value);
+		
+		UserEntity user = jpaRepository.save(update);
+		return user.isEnabled() == value;
+	}
+
 }

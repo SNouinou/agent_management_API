@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,8 @@ import com.agentapi.api.core.application.FetchUserList;
 import com.agentapi.api.core.application.FetchUserListInput;
 import com.agentapi.api.core.application.GenerateUsers;
 import com.agentapi.api.core.application.GenerateUsersInput;
+import com.agentapi.api.core.application.ToggleUserAccess;
+import com.agentapi.api.core.application.ToggleUserAccessInput;
 import com.agentapi.api.core.domain.BatchFeedback;
 import com.agentapi.api.core.domain.User;
 import com.agentapi.api.core.domain.UserProfile;
@@ -57,6 +60,8 @@ public class UserController {
 	private ConsultUserProfile consultUserProfile;
 	
 	private DeleteUser deleteUser;
+	
+	private ToggleUserAccess toggleUserAccess;
 	
 	@GetMapping(value="generate")
 	public ResponseEntity<List<User>> generateUsers(@RequestParam Integer count){
@@ -100,6 +105,17 @@ public class UserController {
 		Boolean payload;
 		try {
 			payload = deleteUser.handle(new DeleteUserInput(id));
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
+		return ResponseEntity.ok(payload);
+	}
+	
+	@PostMapping(value = "toggleUserAccess")
+	public ResponseEntity<Boolean> toggleUserAccessById(@RequestBody ToggleUserAccessInput input) {
+		Boolean payload;
+		try {
+			payload = toggleUserAccess.handle(input);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
