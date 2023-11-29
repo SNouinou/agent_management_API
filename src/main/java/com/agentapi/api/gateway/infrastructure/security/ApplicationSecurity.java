@@ -26,7 +26,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/api/users/generate", "/api/users/batch", "/api/auth", "/api/users/fetch",
-				"/api/users/deleteItem").permitAll().anyRequest().authenticated();
+				"/api/users/deleteItem","/api/users/toggleUserAccess").permitAll().anyRequest().authenticated();
 
 		http.csrf().disable() // batch endpoint
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

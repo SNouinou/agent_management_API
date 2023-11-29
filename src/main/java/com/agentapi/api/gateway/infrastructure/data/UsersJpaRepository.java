@@ -17,5 +17,7 @@ public interface UsersJpaRepository extends JpaRepository<UserEntity, String> {
 	  
 	  @Query("select u from UserEntity u where u.username LIKE %:username%")
 	  Page<UserEntity> findByUsername(Pageable pageReq,@Param("username") String username);
+
+	  UserEntity save(UserEntity userEntity);
 	  
 }

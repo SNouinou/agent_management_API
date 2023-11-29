@@ -10,4 +10,5 @@ public interface UserRepository {
 	List<User> findAll();
 	Page<User> getPage(int page, int size, String username);
 	Boolean deleteById(String userId) throws Exception;
+	Boolean toggleUserAccessById(String userId, Boolean value) throws Exception;
 }

@@ -39,7 +39,8 @@ public class UserJavaFaker implements UserFaker {
 					faker.name().username(),
 					faker.internet().emailAddress(),
 					faker.internet().password(),
-					UserRole.values()[new Random().nextInt(UserRole.values().length)]
+					UserRole.values()[new Random().nextInt(UserRole.values().length)],
+					new Random().nextBoolean()
 					);
 			
 			fakeList.add(item);

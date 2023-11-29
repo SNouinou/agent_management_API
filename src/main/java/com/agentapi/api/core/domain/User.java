@@ -25,6 +25,7 @@ public class User {
 	  private String email;
 	  private String password;
 	  private UserRole role;
+	  private Boolean enabled;
 	  
 	  public UserProfile mapToUserProfile() {
 		    return new UserProfile(
