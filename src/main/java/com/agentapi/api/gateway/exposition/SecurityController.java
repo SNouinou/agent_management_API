@@ -34,7 +34,7 @@ public class SecurityController {
     	} catch(BadCredentialsException e) {
     		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
     	} catch(DisabledException e) {
-    		throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User does not have access.");
+    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have access.");
     	} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
