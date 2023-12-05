@@ -27,8 +27,8 @@ import lombok.AllArgsConstructor;
 public class UsersJpaRepoImpl implements UserRepository {
 
 	private UsersJpaRepository jpaRepository;
-	
-    private EntityManager entityManager;
+
+	private EntityManager entityManager;
 
 	@Override
 	public BatchFeedback saveAll(List<User> userList) {
@@ -43,13 +43,12 @@ public class UsersJpaRepoImpl implements UserRepository {
 
 	@Override
 	public User findUserByUsernameOrEmail(String login) {
-		
-		User user = null;
-		
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedUserFilter");
-        filter.setParameter("isDeleted", Boolean.FALSE);
 
+		User user = null;
+
+		Session session = entityManager.unwrap(Session.class);
+		Filter filter = session.enableFilter("deletedUserFilter");
+		filter.setParameter("isDeleted", Boolean.FALSE);
 
 		try {
 			UserEntity userEntity = jpaRepository.findByUsernameOrEmail(login);
@@ -60,20 +59,20 @@ public class UsersJpaRepoImpl implements UserRepository {
 		} catch (ClassCastException ex) {
 			ex.printStackTrace();
 		} finally {
-	        session.disableFilter("deletedUserFilter");
+			session.disableFilter("deletedUserFilter");
 		}
-		
+
 		return user;
 	}
 
 	@Override
 	public List<User> findAll() {
-		
+
 		List<User> userList = null;
-		
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedUserFilter");
-        filter.setParameter("isDeleted", Boolean.FALSE);
+
+		Session session = entityManager.unwrap(Session.class);
+		Filter filter = session.enableFilter("deletedUserFilter");
+		filter.setParameter("isDeleted", Boolean.FALSE);
 
 		List<UserEntity> userEntityList = jpaRepository.findAll();
 
@@ -88,48 +87,50 @@ public class UsersJpaRepoImpl implements UserRepository {
 			ex.printStackTrace();
 			userList = new ArrayList<User>();
 		} finally {
-	        session.disableFilter("deletedUserFilter");
+			session.disableFilter("deletedUserFilter");
 		}
-		
+
 		return userList;
 	}
 
 	@Override
 	public Page<User> getPage(int page, int size, String username) {
-		
+
 		Page<User> usersPage = Page.<User>empty();
-		
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedUserFilter");
-        filter.setParameter("isDeleted", Boolean.FALSE);
-        
+
+		Session session = entityManager.unwrap(Session.class);
+		Filter filter = session.enableFilter("deletedUserFilter");
+		filter.setParameter("isDeleted", Boolean.FALSE);
+
 		try {
 
-		Pageable pageReq = PageRequest.of(page - 1, size);
+			Pageable pageReq = PageRequest.of(page - 1, size);
 
-		Page<UserEntity> userEntityList;
+			Page<UserEntity> userEntityList;
 
-		if (username != null) {
-			userEntityList = jpaRepository.findByUsername(pageReq, username);
-		} else {
-			userEntityList = jpaRepository.findAll(pageReq);
-		}
+			if (username != null) {
+				userEntityList = jpaRepository.findByUsername(pageReq, username);
+			} else {
+				userEntityList = jpaRepository.findAll(pageReq);
+			}
 
-			usersPage = userEntityList.<User>map((x) -> {return x.toDomain();});
+			usersPage = userEntityList.<User>map((x) -> {
+				return x.toDomain();
+			});
 		} catch (ClassCastException ex) {
 			ex.printStackTrace();
 			usersPage = Page.<User>empty();
 		} finally {
-	        session.disableFilter("deletedUserFilter");
+			session.disableFilter("deletedUserFilter");
 		}
-		
+
 		return usersPage;
 	}
 
 	@Override
 	public Boolean deleteById(String userId) throws Exception {
 		Optional<UserEntity> userLookup = jpaRepository.findById(userId);
-		if(userLookup.isEmpty()) {
+		if (userLookup.isEmpty()) {
 			throw new Exception("Attempt to delete user that does not exist");
 		}
 		jpaRepository.deleteById(userId);
@@ -139,13 +140,13 @@ public class UsersJpaRepoImpl implements UserRepository {
 	@Override
 	public Boolean toggleUserAccessById(String userId, Boolean value) throws Exception {
 		Optional<UserEntity> userLookup = jpaRepository.findById(userId);
-		if(userLookup.isEmpty()) {
+		if (userLookup.isEmpty()) {
 			throw new Exception("Attempt to perform an action on a user that does not exist");
 		}
-		
+
 		UserEntity update = userLookup.get();
 		update.setEnabled(value);
-		
+
 		UserEntity user = jpaRepository.save(update);
 		return user.isEnabled() == value;
 	}
