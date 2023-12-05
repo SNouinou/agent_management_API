@@ -43,14 +43,27 @@ public class UsersJpaRepoImpl implements UserRepository {
 
 	@Override
 	public User findUserByUsernameOrEmail(String login) {
+		
+		User user = null;
+		
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedUserFilter");
+        filter.setParameter("isDeleted", Boolean.FALSE);
 
-		UserEntity user = jpaRepository.findByUsernameOrEmail(login);
 
-		if (user == null) {
-			return null;
-		} else {
-			return user.toDomain();
+		try {
+			UserEntity userEntity = jpaRepository.findByUsernameOrEmail(login);
+			if (userEntity != null) {
+				user = userEntity.toDomain();
+			}
+
+		} catch (ClassCastException ex) {
+			ex.printStackTrace();
+		} finally {
+	        session.disableFilter("deletedUserFilter");
 		}
+		
+		return user;
 	}
 
 	@Override
@@ -89,6 +102,8 @@ public class UsersJpaRepoImpl implements UserRepository {
         Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedUserFilter");
         filter.setParameter("isDeleted", Boolean.FALSE);
+        
+		try {
 
 		Pageable pageReq = PageRequest.of(page - 1, size);
 
@@ -100,7 +115,6 @@ public class UsersJpaRepoImpl implements UserRepository {
 			userEntityList = jpaRepository.findAll(pageReq);
 		}
 
-		try {
 			usersPage = userEntityList.<User>map((x) -> {return x.toDomain();});
 		} catch (ClassCastException ex) {
 			ex.printStackTrace();
