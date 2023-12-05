@@ -56,7 +56,7 @@ public class UsersJpaRepoImpl implements UserRepository {
 				user = userEntity.toDomain();
 			}
 
-		} catch (ClassCastException ex) {
+		} catch (RuntimeException ex) {
 			ex.printStackTrace();
 		} finally {
 			session.disableFilter("deletedUserFilter");

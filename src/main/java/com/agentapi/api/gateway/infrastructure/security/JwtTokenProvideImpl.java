@@ -45,9 +45,9 @@ public class JwtTokenProvideImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String createToken(String userName, UserRole roles) {
+    public String createToken(String userName, SecurityRole roles) {
         Claims claims = Jwts.claims().setSubject(userName);
-        claims.put("auth", Arrays.asList(roles).stream().map(s -> new SimpleGrantedAuthority(new SecurityRole(s).getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
+        claims.put("auth", Arrays.asList(roles).stream().map(securityRole -> new SimpleGrantedAuthority(securityRole.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
