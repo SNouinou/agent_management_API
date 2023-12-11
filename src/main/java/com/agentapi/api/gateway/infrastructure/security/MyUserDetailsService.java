@@ -27,7 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(login)
+                .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .authorities(new SecurityRole(user.getRole()))
                 .accountExpired(false)
